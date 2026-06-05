@@ -7,7 +7,7 @@
 - Django
 - HTML
 - CSS
-- SQLite
+- MySQL
 
 ### Modules
 - Admin Management
