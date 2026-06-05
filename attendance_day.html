@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Attendance - {{ selected_date }}</h2>
+
+<div style="margin-bottom:15px;">
+
+    <!-- Back Button -->
+    <a href="{% url 'attendance' %}" 
+       style="background:#6c757d; color:white; padding:8px 15px; border-radius:5px; text-decoration:none;">
+       ← Back
+    </a>
+    
+
+    <!-- PDF Button -->
+    <a href="{% url 'attendance_pdf' selected_date %}" 
+       style="background:green; color:white; padding:8px 15px; border-radius:5px; text-decoration:none;">
+       Download PDF
+    </a>
+
+</div>
+
+<form method="GET" style="margin-bottom:15px;">
+    <input type="text" name="search" placeholder="Search staff..."
+           value="{{ search }}"
+           style="padding:6px; width:200px;">
+
+    <button type="submit"
+            style="padding:6px 12px; background:#007bff; color:white; border:none; border-radius:4px;">
+        Search
+    </button>
+</form>
+
+
+<table border="1" width="100%" cellpadding="10" style="text-align:center;">
+<tr>
+    <th>Staff</th>
+    <th>Role</th>
+    <th>Status</th>
+</tr>
+
+{% for a in attendance %}
+<tr>
+    <td>{{ a.staff.name }}</td>
+    <td>{{ a.staff.role }}</td>
+    <td>
+        {% if a.status == "Present" %}
+            <span style="color:green;">Present</span>
+        {% else %}
+            <span style="color:red;">Absent</span>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

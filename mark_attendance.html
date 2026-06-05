@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+
+<div style="display:flex; justify-content:space-between; align-items:center;">
+
+    <h2>Mark Attendance</h2>
+
+    <a href="{% url 'attendance' %}" 
+       style="background:green; color:white; padding:6px 12px; border-radius:5px; text-decoration:none;">
+       ← Back
+    </a>
+
+</div>
+
+<form method="POST">
+{% csrf_token %}
+
+<label>Select Date:</label>
+<input type="date" id="attendanceDate" name="date" required>
+
+<div id="dateError"
+     style="
+        color:red;
+        font-size:14px;
+        margin-top:5px;
+        margin-bottom:10px;
+        font-weight:bold;
+     ">
+</div>
+
+
+
+<table border="1" width="100%">
+<tr>
+    <th>Staff</th>
+    <th>Status</th>
+</tr>
+
+{% for s in staffs %}
+<tr>
+    <td>{{ s.name }}</td>
+    <td>
+        <select name="status_{{ s.id }}">
+
+            <option value="Present"
+            {% if attendance_dict|get_item:s.id == "Present" %}
+                selected
+            {% endif %}
+            >Present</option>
+
+            <option value="Absent"
+            {% if attendance_dict|get_item:s.id == "Absent" %}
+            selected
+            {% endif %}
+            >Absent</option>
+
+        </select>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+<input type="submit" value="Save Attendance" style="padding:8px 20px; background:green; color:white; border:none;">
+
+</form>
+
+<script>
+const attendanceDate = document.getElementById("attendanceDate");
+const dateError = document.getElementById("dateError");
+
+attendanceDate.addEventListener("change", function () {
+
+    let selectedDate = new Date(this.value);
+
+    let today = new Date();
+
+    today.setHours(0,0,0,0);
+    selectedDate.setHours(0,0,0,0);
+
+    if(selectedDate < today){
+        dateError.innerText = "❌ Previous date attendance not allowed";
+        this.value = "";
+    }
+    else if(selectedDate > today){
+        dateError.innerText = "❌ Future attendance not allowed";
+        this.value = "";
+    }
+    else{
+        dateError.innerText = "";
+    }
+
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+<h2>Attendance - {{ date }}</h2>
+
+<table border="1" width="100%">
+<tr>
+    <th>Staff</th>
+    <th>Status</th>
+</tr>
+
+{% for a in attendance %}
+<tr>
+    <td>{{ a.staff.name }}</td>
+    <td>{{ a.status }}</td>
+</tr>
+{% endfor %}
+
+</table>

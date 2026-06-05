@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>Dashboard</title>
+
+    <style>
+
+/* ===== BODY ===== */
+body {
+    margin: 0;
+    font-family: Arial;
+    display: flex;
+    background: #f5f6fa;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 220px;
+    background: #ffffff;
+    color: #2c3e50;
+    height: 100vh;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    color: gray;
+    padding: 10px;
+    text-decoration: none;
+    margin-bottom: 5px;
+    border-radius: 6px;
+}
+
+.sidebar a:hover {
+    background: #f1f1f1;
+    color: #3498db;
+}
+
+.sidebar i {
+    width: 20px;
+}
+
+/* ===== CONTENT ===== */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* ===== DASHBOARD GRID ===== */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* ===== CLEAN CARD ===== */
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: #2c3e50;
+    border: 1px solid #e0e0e0;
+    transition: 0.3s;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ICON */
+.card i {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #3498db;
+}
+
+/* HOVER EFFECT */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: #2c3e50;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    color: black;
+}
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2c3e50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 0.4s;
+    z-index: 9999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success { background: #2ecc71; }
+.toast.error { background: #e74c3c; }
+.toast.warning { background: #f39c12; }
+
+</style>
+
+<style>
+
+/* your existing CSS */
+
+/* 🔥 ADD THIS BELOW */
+
+.dashboard-container {
+    padding: 20px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #2c3e50;
+    transition: 0.3s;
+}
+
+.menu-item i {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #3498db;
+}
+
+.menu-item span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.menu-item:hover {
+    background: #f5f5f5;
+    transform: translateY(-3px);
+}
+
+.billing-container {
+    width: 350px;
+    margin: 60px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.billing-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.billing-container label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.billing-container select,
+.billing-container input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.billing-container button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.billing-container button:hover {
+    background: #218838;
+}
+
+.big-footer{
+    background:#2f4154;
+    color:white;
+    padding:40px 20px;
+    margin-top:40px;
+}
+
+.footer-container{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    max-width:1100px;
+    margin:auto;
+}
+
+.footer-col{
+    width:220px;
+    margin-bottom:20px;
+}
+
+.footer-col h3{
+    margin-bottom:15px;
+    font-size:16px;
+}
+
+.footer-col p{
+    margin:6px 0;
+    font-size:14px;
+    color:#cfd8dc;
+    cursor:pointer;
+}
+
+.footer-col p:hover{
+    color:white;
+}
+
+.footer-bottom{
+    text-align:center;
+    margin-top:20px;
+    border-top:1px solid #445;
+    padding-top:10px;
+    font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <h2>Sangeetha Mobiles</h2>
+
+    {% if request.user.is_superuser %}
+
+
+        <!-- ADMIN -->
+        <a href="{% url 'admin_dashboard' %}">
+    <i class="fas fa-home"></i> Dashboard
+</a>
+
+<a href="{% url 'product_list' %}">
+    <i class="fas fa-mobile-alt"></i> Products
+</a>
+
+<a href="{% url 'supplier_list' %}">
+    <i class="fas fa-truck"></i> Suppliers
+</a>
+
+<a href="{% url 'sales_report' %}">
+    <i class="fas fa-chart-line"></i> Sales
+</a>
+
+<a href="{% url 'invoice_list' %}">
+    <i class="fas fa-file-invoice"></i> Invoices
+</a>
+
+<a href="{% url 'low_stock' %}">
+    <i class="fas fa-exclamation-triangle"></i> Low Stock
+</a>
+
+<a href="{% url 'purchase_list' %}">
+    <i class="fas fa-shopping-cart"></i> Purchases
+</a>
+
+<a href="{% url 'staff_list' %}">
+    <i class="fas fa-users"></i> Manage Staff
+</a>
+
+<a href="{% url 'attendance' %}">
+    <i class="fas fa-calendar-check"></i> Attendance
+</a>
+
+<a href="{% url 'reports' %}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Reports</span>
+    </a>
+
+    {% else %}
+        <!-- STAFF -->
+<a href="{% url 'staff_dashboard' %}">
+    <i class="fas fa-home"></i> Dashboard
+</a>
+
+<a href="{% url 'product_list' %}">
+    <i class="fas fa-mobile-alt"></i> Products
+</a>
+
+<a href="{% url 'billing' %}">
+    <i class="fas fa-file-invoice"></i> Billing
+</a>
+
+<a href="{% url 'invoice_list' %}">
+    <i class="fas fa-file-alt"></i> Invoices
+</a>
+
+<a href="{% url 'sales_report' %}">
+    <i class="fas fa-chart-line"></i> Sales
+</a>
+
+<a href="{% url 'low_stock' %}">
+    <i class="fas fa-exclamation-triangle"></i> Low Stock
+</a>
+
+    {% endif %}
+
+    <a href="{% url 'logout' %}" onclick="return confirmLogout()">
+    <i class="fas fa-sign-out-alt"></i> Logout
+</a>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div id="toast" class="toast"></div>
+
+
+
+<script>
+function showToast(message, type="success") {
+    let toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.className = "toast show " + type;
+
+    setTimeout(() => {
+        toast.className = "toast";
+    }, 3000);
+}
+</script>
+
+
+<script>
+function confirmLogout() {
+    return confirm("Are you sure you want to logout?");
+}
+</script>
+
+
+
+</body>
+</html>

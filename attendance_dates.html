@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Attendance Dates</h2>
+
+
+<div style="margin-bottom:15px;">
+    <a href="{% url 'mark_attendance' %}"
+       style="background:#28a745; color:white; padding:10px 15px; border-radius:5px; text-decoration:none;">
+       + Mark Attendance
+    </a>
+</div>
+
+<table border="1" width="50%" style="margin:auto; text-align:center;">
+<tr>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for d in dates %}
+<tr {% if d.date == today %} style="background: #d4edda;" {% endif %}>
+    <td>{{ d.date|date:"d M Y" }}</td>
+    <td>
+        <a href="{% url 'attendance_by_date' d.date|date:'Y-m-d' %}"
+   style="background:#007bff; color:white; padding:6px 12px; border-radius:4px; text-decoration:none;">
+   View
+    </a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

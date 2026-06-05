@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="max-width: 400px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+    <h2 style="text-align:center; margin-bottom:20px;">Edit Purchase</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Product (Fixed) -->
+<input type="text"
+       value="{{ purchase.product.mobile_name }}"
+       readonly
+       style="width:100%; padding:10px; margin-bottom:15px; background:#eee;">
+
+<!-- Supplier (Fixed) -->
+<input type="text"
+       value="{{ purchase.supplier.name }}"
+       readonly
+       style="width:100%; padding:10px; margin-bottom:15px; background:#eee;">
+
+        <!-- Quantity -->
+        <input type="number" name="quantity"
+               value="{{ purchase.quantity }}"
+               placeholder="Enter quantity"
+               required style="width:100%; padding:10px; margin-bottom:15px;">
+
+        <!-- Price -->
+        <input type="number" name="price"
+               value="{{ purchase.price }}"
+               placeholder="Enter price"
+               required style="width:100%; padding:10px; margin-bottom:15px;">
+
+        <!-- Update Button -->
+        <button type="submit"
+                style="width:100%; padding:10px; background:#2c3e50; color:white; border:none;">
+            Update Purchase
+        </button>
+
+        <!-- Back Button -->
+        <a href="{% url 'purchase_list' %}"
+           style="display:block; text-align:center; margin-top:15px; background:#888; color:white; padding:10px; text-decoration:none; border-radius:5px;">
+            ← Back
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

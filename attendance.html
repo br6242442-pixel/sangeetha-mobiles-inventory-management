@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📊 Attendance</h2>
+
+<style>
+.btn {
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: green;
+    font-size: 14px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+/* Back Button */
+.btn-back {
+    background-color: #6c757d;  /* Gray */
+}
+
+/* Mark Attendance Button */
+.btn-add {
+    background-color: #28a745;  /* Green */
+}
+
+/* PDF Button */
+.btn-pdf {
+    background-color: #dc3545;  /* Red */
+}
+
+/* Hover effect (nice UI) */
+.btn:hover {
+    opacity: 0.85;
+}
+
+.top-buttons{
+    margin-bottom: 20px;
+}
+
+</style>
+    
+    
+<div style="margin-bottom:20px;">
+
+    <a href="{% url 'admin_dashboard' %}"
+       style="background:#6c757d; color:white; padding:10px 18px; border-radius:6px; text-decoration:none; font-weight:bold;">
+       ← Back
+    </a>
+
+    <a href="{% url 'mark_attendance' %}"
+       style="background:#28a745; color:white; padding:10px 18px; border-radius:6px; text-decoration:none; font-weight:bold;">
+       + Mark Attendance
+    </a>
+
+    <a href="{% url 'attendance_pdf' '2026-04-19' %}"
+       style="background:#dc3545; color:white; padding:10px 18px; border-radius:6px; text-decoration:none; font-weight:bold;">
+       Download PDF
+    </a>
+
+</div>
+
+<table border="1" width="100%" cellpadding="10">
+    <tr>
+        <th>Staff Name</th>
+        <th>Role</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+
+    {% for record in attendance %}
+    <tr>
+        <td>{{ record.staff.name }}</td>
+        <td>{{ record.staff.role }}</td>
+        <td>{{ record.date }}</td>
+        <td>
+            {% if record.status == "Present" %}
+                <span style="color:green;">Present</span>
+            {% else %}
+                <span style="color:red;">Absent</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No attendance records</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

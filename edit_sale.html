@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="width:400px; margin:40px auto; background:white; padding:25px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+
+    <h2 style="text-align:center;">Edit Sale</h2>
+
+    <p><b>Customer:</b> {{ sale.customer.name }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Product -->
+        <label>Product:</label><br>
+        <select name="product" id="product" style="width:100%; padding:8px;">
+            {% for product in products %}
+            <option value="{{ product.product_id }}"
+                    data-price="{{ product.price }}"
+                    data-stock="{{ product.stock_quantity }}"
+                    {% if product.product_id == sale.mobile_id %}selected{% endif %}>
+                {{ product.mobile_name }} (Stock: {{ product.stock_quantity }})
+            </option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <!-- Quantity -->
+        <label>Quantity:</label><br>
+        <input type="number" name="quantity" id="quantity"
+       value="{{ sale.quantity }}"
+       required min="1"
+       style="width:100%; padding:8px;">
+
+        <!-- Warning -->
+        <p id="stock-warning" style="color:red; display:none;"></p>
+
+        <br>
+
+        <!-- Total -->
+        <label>Total Price:</label><br>
+        <input type="text" id="total" value="{{ sale.total_price }}"
+               readonly style="width:100%; padding:8px; background:#eee;">
+
+        <br><br>
+
+        <!-- Buttons -->
+        <button type="submit" onclick="returncheckQty()"
+            style="background:#28a745; color:white; padding:10px 20px; border:none; border-radius:5px;">
+            Update Sale
+        </button>
+
+        {% if from_page == "staff" %}
+    <a href="/sales_report/?from=staff">
+        <button type="button">Back</button>
+    </a>
+{% else %}
+    <a href="/sales_report/?from=admin">
+        <button type="button">Back</button>
+    </a>
+{% endif %}
+
+
+    </form>
+
+</div>
+
+<script>
+    const productSelect = document.getElementById("product");
+    const quantityInput = document.getElementById("quantity");
+    const totalInput = document.getElementById("total");
+    const warning = document.getElementById("stock-warning");
+    const updateBtn = document.getElementById("updateBtn");
+
+    function updateTotalAndStock() {
+        const selected = productSelect.options[productSelect.selectedIndex];
+        const price = parseFloat(selected.getAttribute("data-price"));
+        const stock = parseInt(selected.getAttribute("data-stock"));
+        const qty = parseInt(quantityInput.value) || 0;
+
+        totalInput.value = price * qty;
+
+        if (qty > stock) {
+            warning.style.display = "block";
+            warning.innerText = "⚠ Only " + stock + " items available!";
+            updateBtn.disabled = true;
+            updateBtn.style.background = "gray";
+        } else {
+            warning.style.display = "none";
+            updateBtn.disabled = false;
+            updateBtn.style.background = "#28a745";
+        }
+    }
+
+    productSelect.addEventListener("change", updateTotalAndStock);
+    quantityInput.addEventListener("input", updateTotalAndStock);
+
+    window.onload = updateTotalAndStock;
+</script>
+
+<script>
+function validateStock() {
+    let qty = document.getElementById("quantity").value;
+    let selected = document.getElementById("product");
+    let stockText = selected.options[selected.selectedIndex].text;
+
+    let stock = parseInt(stockText.match(/Stock: (\d+)/)[1]);
+
+    if (qty > stock) {
+        alert("Stock not available!");
+        return false;
+    }
+    return true;
+}
+</script>
+
+<script>
+function checkQty() {
+    var q = document.getElementById("quantity").value;
+
+    if (q == "" || q <= 0) {
+        alert("Enter valid quantity!");
+        return false;
+    }
+    return true;
+}
+</script>
+
+{% endblock %}
+
+

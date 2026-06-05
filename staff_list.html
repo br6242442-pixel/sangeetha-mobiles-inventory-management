@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+/* HEADER */
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* BUTTONS */
+.btn{
+    padding:8px 14px;
+    border-radius:6px;
+    text-decoration:none;
+    font-size:14px;
+    color:white;
+}
+
+.btn-back{
+    background:#6c757d;
+}
+
+.btn-add{
+    background:#2ecc71;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#2c3e50;
+    color:white;
+    padding:12px;
+    text-align:center;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f5f5f5;
+}
+
+/* ACTION BUTTONS */
+.action-btn{
+    padding:5px 10px;
+    border-radius:5px;
+    font-size:12px;
+    text-decoration:none;
+    color:white;
+}
+
+.edit{
+    background:#3498db;
+}
+
+.delete{
+    background:#e74c3c;
+}
+
+</style>
+
+<!-- HEADER -->
+<div class="page-header">
+    <h2>👨‍💼 Staff Management</h2>
+
+    <div>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-back">← Back</a>
+
+        <a href="{% url 'add_staff' %}" class="btn btn-add">+ Add Staff</a>
+    </div>
+</div>
+
+<div style="margin-bottom:15px;">
+
+    <input type="text"
+           id="staffSearch"
+           placeholder="Search Staff..."
+           style="
+                width:300px;
+                padding:10px;
+                border:1px solid #ccc;
+                border-radius:8px;
+           ">
+
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+<table>
+
+<tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Role</th>
+    <th>Actions</th>
+</tr>
+
+{% for staff in staff_list %}
+<tr>
+    <td>{{ staff.name }}</td>
+    <td>{{ staff.email }}</td>
+    <td>{{ staff.phone }}</td>
+    <td>{{ staff.role }}</td>
+
+    <td>
+    <a href="{% url 'edit_staff' staff.id %}" class="action-btn edit">Edit</a>
+
+    <form method="POST" action="{% url 'delete_staff' staff.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit"
+            onclick="return confirm('Are you sure want to Delete Staff?')"
+            class="action-btn delete">
+            Delete
+        </button>
+    </form>
+</td>
+    
+</tr>
+{% endfor %}
+
+</table>
+
+{% if staffs %}
+    <!-- your table -->
+{% else %}
+    <p style="text-align:center;">No staff available</p>
+{% endif %}
+
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    let searchInput =
+    document.getElementById("staffSearch");
+
+    let rows =
+    document.querySelectorAll("table tbody tr");
+
+    searchInput.addEventListener("keyup", function(){
+
+        let value =
+        this.value.toLowerCase();
+
+        rows.forEach(function(row){
+
+            let text =
+            row.innerText.toLowerCase();
+
+            if(text.includes(value)){
+
+                row.style.display = "";
+            }
+
+            else{
+
+                row.style.display = "none";
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

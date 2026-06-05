@@ -1,0 +1,732 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+    /* ===== MAIN CONTAINER ===== */
+
+    .reports-wrapper{
+        width:100%;
+        padding:20px 25px;
+        box-sizing:border-box;
+        overflow-x:hidden;
+    }
+
+    .reports-title{
+        font-size:34px;
+        font-weight:700;
+        color:#1e293b;
+        margin-bottom:22px;
+    }
+
+  .modern-cards{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.modern-card{
+    width:175px;
+    height:85px;
+    background:white;
+    border-radius:16px;
+    padding:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    transition:0.3s;
+}
+
+.modern-card:hover{
+    transform:translateY(-4px);
+}
+
+.modern-card h4{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.modern-card h2{
+    color:#0f172a;
+    font-size:24px;
+    margin-bottom:3px;
+}
+
+.modern-card p{
+    color:#94a3b8;
+    font-size:11px;
+}
+
+.icon-box{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:15px;
+}
+
+/* ===== LIGHT ICON COLORS ===== */
+
+.card1 .icon-box{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.card2 .icon-box{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+.card3 .icon-box{
+    background:#fef3c7;
+    color:#d97706;
+}
+
+.card4 .icon-box{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.card5 .icon-box{
+    background:#f3e8ff;
+    color:#9333ea;
+}
+
+    /* ===== BUTTONS ===== */
+
+    .report-buttons{
+        margin-bottom:22px;
+    }
+
+    .report-buttons button{
+        border:none;
+        background:#e0f2fe;
+        color:#0369a1;
+        padding:10px 20px;
+        border-radius:10px;
+        font-weight:600;
+        cursor:pointer;
+        margin-right:10px;
+        transition:0.3s;
+    }
+
+    .report-buttons button:hover{
+        background:#bae6fd;
+    }
+
+    /* ===== GRAPH GRID ===== */
+
+    .graph-grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:18px;
+        width:100%;
+        margin-bottom:20px;
+    }
+
+    .graph-box{
+        background:white;
+        border-radius:18px;
+        padding:18px;
+        box-shadow:0 3px 10px rgba(0,0,0,0.05);
+        width:100%;
+        box-sizing:border-box;
+    }
+
+    .graph-box h3{
+        margin-bottom:18px;
+        color:#334155;
+        font-size:20px;
+    }
+
+    canvas{
+        width:100% !important;
+        height:280px !important;
+    }
+
+    /* ===== TABLE ===== */
+
+    .table-box{
+        background:white;
+        border-radius:18px;
+        padding:18px;
+        box-shadow:0 3px 10px rgba(0,0,0,0.05);
+        margin-bottom:22px;
+        overflow-x:auto;
+    }
+
+    .table-box h3{
+        margin-bottom:16px;
+        color:#334155;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    table th{
+        background:#0f172a;
+        color:white;
+        padding:13px;
+        font-size:14px;
+        white-space:nowrap;
+    }
+
+    table td{
+        padding:12px;
+        text-align:center;
+        border-bottom:1px solid #e2e8f0;
+        font-size:14px;
+        white-space:nowrap;
+    }
+
+    table tr:hover{
+        background:#f8fafc;
+    }
+
+    .mini-cards{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.mini-card{
+    width:190px;
+    height:85px;
+    background:white;
+    border-radius:16px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    transition:0.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.mini-card:hover{
+    transform:translateY(-4px);
+}
+
+.mini-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+}
+
+/* ===== LIGHT COLORS ===== */
+
+.mini-card:nth-child(1)::before{
+    background:#60a5fa;
+}
+
+.mini-card:nth-child(2)::before{
+    background:#34d399;
+}
+
+.mini-card:nth-child(3)::before{
+    background:#c084fc;
+}
+
+.mini-card h4{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.mini-card h2{
+    color:#0f172a;
+    font-size:22px;
+}
+
+</style>
+
+<div class="reports-wrapper">
+
+    <h1 class="reports-title">
+        Inventory Reports Dashboard
+    </h1>
+
+    <!-- ===== MODERN TOP CARDS ===== -->
+
+<div class="modern-cards">
+
+    <div class="modern-card card1">
+
+        <div>
+            <h4>Total Products</h4>
+            <h2>14</h2>
+            <p>Available products</p>
+        </div>
+
+        <div class="icon-box">
+            <i class="fa-solid fa-mobile-screen"></i>
+        </div>
+
+    </div>
+
+    <div class="modern-card card2">
+
+        <div>
+            <h4>Total Sales</h4>
+            <h2>₹56L</h2>
+            <p>Total sales amount</p>
+        </div>
+
+        <div class="icon-box">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+
+    </div>
+
+    <div class="modern-card card3">
+
+        <div>
+            <h4>Low Stock</h4>
+            <h2>2</h2>
+            <p>Need restock</p>
+        </div>
+
+        <div class="icon-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+    </div>
+
+    <div class="modern-card card4">
+
+        <div>
+            <h4>Out Of Stock</h4>
+            <h2>0</h2>
+            <p>No unavailable products</p>
+        </div>
+
+        <div class="icon-box">
+            <i class="fa-solid fa-box-open"></i>
+        </div>
+
+    </div>
+
+    <div class="modern-card card5">
+
+        <div>
+            <h4>Total Categories</h4>
+            <h2>8</h2>
+            <p>Mobile brands</p>
+        </div>
+
+        <div class="icon-box">
+            <i class="fa-solid fa-layer-group"></i>
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- ===== BUTTONS ===== -->
+
+    <div class="report-buttons">
+
+        <button onclick="showWeekly()">
+            Weekly Reports
+        </button>
+
+        <button onclick="showMonthly()">
+            Monthly Reports
+        </button>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- ================= WEEKLY REPORT ================= -->
+    <!-- ================================================= -->
+
+    <div id="weekly-section">
+
+        <!-- Graphs -->
+
+        <div class="graph-grid">
+
+            <div class="graph-box">
+
+                <h3>Weekly Sales Analysis</h3>
+
+                <canvas id="weeklySalesChart"></canvas>
+
+            </div>
+
+            <div class="graph-box">
+
+                <h3>Weekly Stock Analysis</h3>
+
+                <canvas id="weeklyStockChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- Table -->
+
+        <div class="table-box">
+
+            <h3>Weekly Inventory Report</h3>
+
+            <table>
+
+                <tr>
+                    <th>Day</th>
+                    <th>Products Sold</th>
+                    <th>Sales</th>
+                    <th>Stock Added</th>
+                    <th>Low Stock</th>
+                </tr>
+
+                <tr>
+                    <td>Monday</td>
+                    <td>12</td>
+                    <td>₹2,20,000</td>
+                    <td>15</td>
+                    <td>1</td>
+                </tr>
+
+                <tr>
+                    <td>Tuesday</td>
+                    <td>18</td>
+                    <td>₹3,40,000</td>
+                    <td>22</td>
+                    <td>0</td>
+                </tr>
+
+                <tr>
+                    <td>Wednesday</td>
+                    <td>10</td>
+                    <td>₹1,80,000</td>
+                    <td>12</td>
+                    <td>1</td>
+                </tr>
+
+                <tr>
+                    <td>Thursday</td>
+                    <td>24</td>
+                    <td>₹4,20,000</td>
+                    <td>30</td>
+                    <td>0</td>
+                </tr>
+
+                <tr>
+                    <td>Friday</td>
+                    <td>16</td>
+                    <td>₹2,60,000</td>
+                    <td>18</td>
+                    <td>0</td>
+                </tr>
+
+                <tr>
+                    <td>Saturday</td>
+                    <td>30</td>
+                    <td>₹5,00,000</td>
+                    <td>40</td>
+                    <td>0</td>
+                </tr>
+
+                <tr>
+                    <td>Sunday</td>
+                    <td>22</td>
+                    <td>₹3,90,000</td>
+                    <td>25</td>
+                    <td>0</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- Mini Cards -->
+
+        <div class="mini-cards">
+
+            <div class="mini-card">
+                <h4>Highest Sale</h4>
+                <h2>₹5L</h2>
+            </div>
+
+            <div class="mini-card">
+                <h4>Best Brand</h4>
+                <h2>Apple</h2>
+            </div>
+
+            <div class="mini-card">
+                <h4>Products Sold</h4>
+                <h2>132</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- ================= MONTHLY REPORT ================ -->
+    <!-- ================================================= -->
+
+    <div id="monthly-section" style="display:none;">
+
+        <!-- Graphs -->
+
+        <div class="graph-grid">
+
+            <div class="graph-box">
+
+                <h3>Monthly Revenue Analysis</h3>
+
+                <canvas id="monthlyRevenueChart"></canvas>
+
+            </div>
+
+            <div class="graph-box">
+
+                <h3>Monthly Product Analysis</h3>
+
+                <canvas id="monthlyProductChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- Table -->
+
+        <div class="table-box">
+
+            <h3>Monthly Inventory Report</h3>
+
+            <table>
+
+                <tr>
+                    <th>Month</th>
+                    <th>Products Sold</th>
+                    <th>Total Revenue</th>
+                    <th>Stock Added</th>
+                    <th>Low Stock</th>
+                </tr>
+
+                <tr>
+                    <td>January</td>
+                    <td>120</td>
+                    <td>₹12L</td>
+                    <td>140</td>
+                    <td>4</td>
+                </tr>
+
+                <tr>
+                    <td>February</td>
+                    <td>150</td>
+                    <td>₹15L</td>
+                    <td>160</td>
+                    <td>3</td>
+                </tr>
+
+                <tr>
+                    <td>March</td>
+                    <td>110</td>
+                    <td>₹11L</td>
+                    <td>130</td>
+                    <td>5</td>
+                </tr>
+
+                <tr>
+                    <td>April</td>
+                    <td>180</td>
+                    <td>₹18L</td>
+                    <td>200</td>
+                    <td>2</td>
+                </tr>
+
+                <tr>
+                    <td>May</td>
+                    <td>140</td>
+                    <td>₹14L</td>
+                    <td>170</td>
+                    <td>2</td>
+                </tr>
+
+                <tr>
+                    <td>June</td>
+                    <td>210</td>
+                    <td>₹22L</td>
+                    <td>250</td>
+                    <td>1</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- Mini Cards -->
+
+        <div class="mini-cards">
+
+            <div class="mini-card">
+                <h4>Best Month</h4>
+                <h2>June</h2>
+            </div>
+
+            <div class="mini-card">
+                <h4>Top Product</h4>
+                <h2>iPhone</h2>
+            </div>
+
+            <div class="mini-card">
+                <h4>Total Revenue</h4>
+                <h2>₹93L</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    // ===== WEEKLY SALES =====
+
+    new Chart(document.getElementById("weeklySalesChart"), {
+
+        type:"bar",
+
+        data:{
+            labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+
+            datasets:[{
+                label:"Sales",
+
+                data:[220000,340000,180000,420000,260000,500000,390000],
+
+                backgroundColor:[
+                    "#93c5fd",
+                    "#86efac",
+                    "#fde68a",
+                    "#f9a8d4",
+                    "#c4b5fd",
+                    "#67e8f9",
+                    "#fdba74"
+                ],
+
+                borderRadius:8
+            }]
+        }
+    });
+
+    // ===== WEEKLY STOCK =====
+
+    new Chart(document.getElementById("weeklyStockChart"), {
+
+        type:"line",
+
+        data:{
+            labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+
+            datasets:[{
+                label:"Stock Added",
+
+                data:[15,22,12,30,18,40,25],
+
+                borderColor:"#60a5fa",
+
+                backgroundColor:"#dbeafe",
+
+                fill:true,
+
+                tension:0.4
+            }]
+        }
+    });
+
+    // ===== MONTHLY REVENUE =====
+
+    new Chart(document.getElementById("monthlyRevenueChart"), {
+
+        type:"line",
+
+        data:{
+            labels:["Jan","Feb","Mar","Apr","May","Jun"],
+
+            datasets:[{
+                label:"Revenue",
+
+                data:[12,15,11,18,14,22],
+
+                borderColor:"#34d399",
+
+                backgroundColor:"#d1fae5",
+
+                fill:true,
+
+                tension:0.4
+            }]
+        }
+    });
+
+    // ===== MONTHLY PRODUCTS =====
+
+    new Chart(document.getElementById("monthlyProductChart"), {
+
+        type:"bar",
+
+        data:{
+            labels:["Jan","Feb","Mar","Apr","May","Jun"],
+
+            datasets:[{
+                label:"Products Sold",
+
+                data:[120,150,110,180,140,210],
+
+                backgroundColor:[
+                    "#93c5fd",
+                    "#86efac",
+                    "#fde68a",
+                    "#f9a8d4",
+                    "#c4b5fd",
+                    "#67e8f9"
+                ],
+
+                borderRadius:8
+            }]
+        }
+    });
+
+    // ===== BUTTON FUNCTIONS =====
+
+    function showWeekly(){
+
+        document.getElementById("weekly-section").style.display = "block";
+
+        document.getElementById("monthly-section").style.display = "none";
+    }
+
+    function showMonthly(){
+
+        document.getElementById("weekly-section").style.display = "none";
+
+        document.getElementById("monthly-section").style.display = "block";
+    }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sangeetha Mobiles Shop Inventory Management System</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Outfit',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#edf3ff;
+    overflow-x:hidden;
+    color:#111;
+}
+
+/* BACKGROUND */
+
+.background{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    background:
+    linear-gradient(rgba(255,255,255,0.84),rgba(255,255,255,0.88)),
+    url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1974&auto=format&fit=crop')
+    no-repeat center center/cover;
+
+    filter:blur(2px);
+    transform:scale(1.03);
+
+    z-index:-2;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+
+    background:
+    radial-gradient(circle at top right,
+    rgba(0,119,255,0.12),
+    transparent 40%);
+
+    z-index:-1;
+}
+
+/* NAVBAR */
+
+nav{
+    width:95%;
+    margin:18px auto;
+
+    padding:16px 34px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(255,255,255,0.48);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:22px;
+
+    border:1px solid rgba(255,255,255,0.55);
+
+    box-shadow:
+    0 8px 30px rgba(0,0,0,0.05),
+    inset 0 1px 1px rgba(255,255,255,0.5);
+
+    position:sticky;
+    top:10px;
+    z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-size:24px;
+    font-weight:700;
+    color:#0c2f75;
+}
+
+.logo i{
+    color:#0077ff;
+    font-size:28px;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:34px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#222;
+    font-size:15px;
+    font-weight:500;
+    position:relative;
+    transition:0.3s;
+}
+
+nav ul li a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-5px;
+    width:0%;
+    height:2px;
+    background:#0077ff;
+    transition:0.3s;
+}
+
+nav ul li a:hover::after{
+    width:100%;
+}
+
+nav ul li a:hover{
+    color:#0077ff;
+}
+
+/* LOGIN BUTTON */
+
+.login-register-btn{
+
+    text-decoration:none;
+
+    padding:13px 26px;
+
+    background:linear-gradient(135deg,#0077ff,#0052d9);
+
+    color:white;
+
+    border-radius:40px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    box-shadow:0 8px 20px rgba(0,119,255,0.25);
+
+    transition:0.3s;
+}
+
+.login-register-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* HERO */
+
+.hero{
+    width:100%;
+    padding:25px 35px 45px;
+}
+
+.hero-container{
+
+    width:95%;
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:40px;
+
+    background:rgba(255,255,255,0.42);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:34px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    padding:55px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.05),
+    inset 0 1px 1px rgba(255,255,255,0.5);
+}
+
+.hero-left{
+    flex:1;
+}
+
+.tag{
+    display:inline-block;
+
+    background:white;
+
+    color:#0077ff;
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    margin-bottom:24px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.hero-left h1{
+    font-size:58px;
+    line-height:1.15;
+    margin-bottom:22px;
+    font-weight:800;
+    color:#111;
+}
+
+.hero-left h1 span{
+    color:#0077ff;
+}
+
+.hero-left p{
+    font-size:17px;
+    line-height:1.8;
+    color:#555;
+    margin-bottom:34px;
+    max-width:650px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.hero-buttons button{
+    padding:15px 30px;
+    border:none;
+    border-radius:40px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.start-btn{
+    background:linear-gradient(135deg,#0077ff,#0052d9);
+    color:white;
+
+    box-shadow:0 8px 20px rgba(0,119,255,0.25);
+}
+
+.learn-btn{
+    background:white;
+    color:#111;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.hero-buttons button:hover{
+    transform:translateY(-3px);
+}
+
+/* HERO IMAGE */
+
+.hero-right{
+    flex:1;
+    display:flex;
+    justify-content:center;
+}
+
+.hero-right img{
+    width:100%;
+    max-width:440px;
+
+    filter:drop-shadow(0 15px 35px rgba(0,0,0,0.18));
+}
+
+/* INFO CARDS */
+
+.slide-info{
+
+    width:90%;
+    margin:10px auto 65px auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+}
+
+.slide-card{
+
+    background:rgba(255,255,255,0.45);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:24px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    padding:22px;
+
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.04),
+    inset 0 1px 1px rgba(255,255,255,0.4);
+}
+
+.slide-card:hover{
+    transform:translateY(-5px);
+}
+
+.slide-card i{
+
+    width:55px;
+    height:55px;
+
+    border-radius:18px;
+
+    background:linear-gradient(135deg,#0077ff,#0052d9);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+
+    font-size:21px;
+}
+
+.slide-card h3{
+    font-size:16px;
+    margin-bottom:4px;
+    font-weight:700;
+}
+
+.slide-card p{
+    color:#666;
+    font-size:13px;
+}
+
+/* FEATURES */
+
+.features{
+    width:92%;
+    margin:auto;
+    padding-bottom:65px;
+}
+
+.features-title{
+    text-align:center;
+    font-size:42px;
+    margin-bottom:38px;
+    font-weight:800;
+}
+
+.features-title span{
+    color:#0077ff;
+}
+
+.feature-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+}
+
+.feature-card{
+
+    background:rgba(255,255,255,0.46);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:28px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    padding:28px 20px;
+
+    text-align:center;
+
+    transition:0.35s;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.04),
+    inset 0 1px 1px rgba(255,255,255,0.4);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.feature-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg,#0077ff,#00c6ff);
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+}
+
+.feature-card i{
+
+    width:70px;
+    height:70px;
+
+    border-radius:22px;
+
+    background:linear-gradient(135deg,#0077ff,#0052d9);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+
+    font-size:28px;
+
+    margin:auto auto 18px;
+
+    box-shadow:0 10px 20px rgba(0,119,255,0.22);
+}
+
+.feature-card h3{
+    font-size:20px;
+    margin-bottom:12px;
+    font-weight:700;
+}
+
+.feature-card p{
+    color:#555;
+    font-size:14px;
+    line-height:1.7;
+}
+
+/* ABOUT */
+
+.about-section{
+    width:92%;
+    margin:0 auto 60px auto;
+
+    background:rgba(255,255,255,0.46);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:30px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    padding:50px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.04),
+    inset 0 1px 1px rgba(255,255,255,0.4);
+}
+
+.about-section h2{
+    font-size:38px;
+    margin-bottom:20px;
+    color:#0077ff;
+}
+
+.about-section p{
+    line-height:2;
+    color:#555;
+    font-size:15px;
+}
+
+/* CONTACT */
+
+.contact-section{
+    width:92%;
+    margin:0 auto 65px auto;
+}
+
+.contact-title{
+    text-align:center;
+    font-size:40px;
+    margin-bottom:35px;
+    color:#0077ff;
+}
+
+.contact-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
+
+.contact-card{
+
+    background:rgba(255,255,255,0.46);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:28px;
+
+    border:1px solid rgba(255,255,255,0.5);
+
+    padding:35px 25px;
+
+    text-align:center;
+
+    transition:0.3s;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.04),
+    inset 0 1px 1px rgba(255,255,255,0.4);
+}
+
+.contact-card:hover{
+    transform:translateY(-8px);
+}
+
+.contact-card i{
+
+    width:70px;
+    height:70px;
+
+    border-radius:22px;
+
+    background:linear-gradient(135deg,#0077ff,#0052d9);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+
+    font-size:28px;
+
+    margin:auto auto 18px;
+}
+
+.contact-card h3{
+    margin-bottom:10px;
+    font-size:22px;
+}
+
+.contact-card p{
+    color:#666;
+    font-size:14px;
+}
+
+/* FOOTER */
+
+.big-footer{
+
+    background:linear-gradient(135deg,#0066ff,#003399);
+
+    color:white;
+
+    padding:45px 40px 18px;
+
+    border-top-left-radius:35px;
+    border-top-right-radius:35px;
+}
+
+.footer-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:30px;
+}
+
+.footer-logo{
+
+    font-size:24px;
+    font-weight:700;
+
+    margin-bottom:16px;
+}
+
+.footer-about{
+    color:#dfe8ff;
+    line-height:1.8;
+    font-size:14px;
+}
+
+.social-icons{
+    margin-top:18px;
+    display:flex;
+    gap:12px;
+}
+
+.social-icons i{
+
+    width:40px;
+    height:40px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+}
+
+.footer-links h3{
+    margin-bottom:16px;
+    font-size:20px;
+}
+
+.footer-links ul{
+    list-style:none;
+}
+
+.footer-links ul li{
+    margin-bottom:10px;
+}
+
+.footer-links ul li a{
+    text-decoration:none;
+    color:#dfe8ff;
+    font-size:14px;
+}
+
+.footer-bottom{
+
+    margin-top:30px;
+
+    border-top:1px solid rgba(255,255,255,0.2);
+
+    padding-top:16px;
+
+    display:flex;
+    justify-content:space-between;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    font-size:13px;
+
+    color:#dfe8ff;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+.hero-container{
+    flex-direction:column;
+    text-align:center;
+}
+
+.hero-left h1{
+    font-size:42px;
+}
+
+.slide-info,
+.feature-grid,
+.contact-box,
+.footer-grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+nav{
+    flex-direction:column;
+    gap:18px;
+}
+
+nav ul{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+}
+
+@media(max-width:700px){
+
+.hero-container{
+    padding:30px;
+}
+
+.hero-left h1{
+    font-size:34px;
+}
+
+.slide-info,
+.feature-grid,
+.contact-box,
+.footer-grid{
+    grid-template-columns:1fr;
+}
+
+.hero-right img{
+    max-width:260px;
+}
+
+.features-title,
+.contact-title{
+    font-size:30px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="overlay"></div>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">
+<i class="fa-solid fa-mobile-screen-button"></i>
+Sangeetha Mobiles
+</div>
+
+<ul>
+<li><a href="#">Home</a></li>
+
+<li><a href="#about">About</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+
+<!-- CHANGE login.html TO YOUR LOGIN PAGE FILE -->
+
+<a href="login" class="login-register-btn">
+Login/Register
+<i class="fa-solid fa-arrow-right"></i>
+</a>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-container">
+
+<div class="hero-left">
+
+<div class="tag">
+Welcome To Sangeetha Mobiles
+</div>
+
+<h1>
+Smart <span>Inventory Management</span> System For Sangeetha Mobiles Shop
+</h1>
+
+<p>
+Manage products, stock details, inventory updates, billing, reports and mobile shop operations efficiently with a modern web-based inventory management system.
+</p>
+
+<div class="hero-buttons">
+
+<button class="start-btn" onclick="window.location.href='/login/'">
+    Get Started
+</button>
+
+<button class="learn-btn">
+Learn More
+</button>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<img src="https://pngimg.com/uploads/iphone16/iphone16_PNG36.png" alt="mobile">
+
+</div>
+
+</div>
+
+</section>
+
+<!-- INFO SECTION -->
+
+<section class="slide-info">
+
+<div class="slide-card">
+<i class="fa-solid fa-shield-halved"></i>
+
+<div>
+<h3>Trusted System</h3>
+<p>100% Secure</p>
+</div>
+</div>
+
+<div class="slide-card">
+<i class="fa-solid fa-gear"></i>
+
+<div>
+<h3>Easy To Use</h3>
+<p>User Friendly</p>
+</div>
+</div>
+
+<div class="slide-card">
+<i class="fa-solid fa-clock"></i>
+
+<div>
+<h3>Real Time Tracking</h3>
+<p>Up-to-date</p>
+</div>
+</div>
+
+<div class="slide-card">
+<i class="fa-solid fa-headset"></i>
+
+<div>
+<h3>24/7 Support</h3>
+<p>Always Available</p>
+</div>
+</div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+<h2 class="features-title">
+System <span>Features</span>
+</h2>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+<i class="fa-solid fa-box-open"></i>
+<h3>Product Management</h3>
+
+<p>
+Add and manage mobile products and accessories easily.
+</p>
+</div>
+
+<div class="feature-card">
+<i class="fa-solid fa-warehouse"></i>
+<h3>Inventory Tracking</h3>
+
+<p>
+Track stock availability and inventory movement instantly.
+</p>
+</div>
+
+<div class="feature-card">
+<i class="fa-solid fa-chart-column"></i>
+<h3>Reports</h3>
+
+<p>
+Generate reports and maintain product records properly.
+</p>
+</div>
+
+<div class="feature-card">
+<i class="fa-solid fa-user-shield"></i>
+<h3>Secure Login</h3>
+
+<p>
+Secure authentication for admin and authorized users.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about-section" id="about">
+
+<h2>About System</h2>
+
+<p>
+Sangeetha Mobiles Shop Inventory Management System is a modern web-based application developed to simplify inventory operations in mobile shops. 
+This system helps maintain stock details, billing, reports, sales information and inventory records efficiently with a secure and user-friendly interface.
+</p>
+
+</section>
+
+<!-- CONTACT -->
+
+<section class="contact-section" id="contact">
+
+<h2 class="contact-title">
+Contact Us
+</h2>
+
+<div class="contact-box">
+
+<div class="contact-card">
+<i class="fa-solid fa-location-dot"></i>
+<h3>Address</h3>
+<p>Tamil Nadu, India</p>
+</div>
+
+<div class="contact-card">
+<i class="fa-solid fa-phone"></i>
+<h3>Phone</h3>
+<p>+91 9876543210</p>
+</div>
+
+<div class="contact-card">
+<i class="fa-solid fa-envelope"></i>
+<h3>Email</h3>
+<p>support@sangeethamobiles.com</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer class="big-footer">
+
+<div class="footer-grid">
+
+<div>
+
+<div class="footer-logo">
+<i class="fa-solid fa-mobile-screen-button"></i>
+Sangeetha Mobiles
+</div>
+
+<p class="footer-about">
+Sangeetha Mobiles Shop Inventory Management System helps manage inventory efficiently with a modern and professional interface.
+</p>
+
+<div class="social-icons">
+
+<i class="fab fa-facebook-f"></i>
+
+<i class="fab fa-instagram"></i>
+
+<i class="fab fa-twitter"></i>
+
+<i class="fab fa-youtube"></i>
+
+</div>
+
+</div>
+
+<div class="footer-links">
+
+<h3>Quick Links</h3>
+
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">Products</a></li>
+<li><a href="#">Inventory</a></li>
+<li><a href="#about">About</a></li>
+</ul>
+
+</div>
+
+<div class="footer-links">
+
+<h3>Features</h3>
+
+<ul>
+<li><a href="#">Product Management</a></li>
+<li><a href="#">Inventory Tracking</a></li>
+<li><a href="#">Reports</a></li>
+<li><a href="#">Secure Login</a></li>
+</ul>
+
+</div>
+
+<div class="footer-links">
+
+<h3>Contact</h3>
+
+<ul>
+<li><a href="#">Siruppa Bellary,India</a></li>
+<li><a href="#">+91 9876543210</a></li>
+<li><a href="#">support@sangeethamobiles.com</a></li>
+</ul>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>
+© 2026 Sangeetha Mobiles Shop Inventory Management System
+</p>
+
+<p>
+Developed By Revathi B
+</p>
+
+</div>
+
+</footer>
+
+</body>
+</html>

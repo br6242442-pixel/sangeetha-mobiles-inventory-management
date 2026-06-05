@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+.purchase-card{
+    max-width:500px;
+    margin:40px auto;
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.purchase-title{
+    text-align:center;
+    margin-bottom:25px;
+    font-size:32px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.purchase-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.purchase-form select,
+.purchase-form input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+    outline:none;
+}
+
+.purchase-form select:focus,
+.purchase-form input:focus{
+    border-color:#28a745;
+}
+
+.save-btn{
+    width:100%;
+    padding:12px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.save-btn:hover{
+    background:#218838;
+}
+
+.back-btn{
+    display:block;
+    text-align:center;
+    background:#6c757d;
+    color:white;
+    padding:12px;
+    text-decoration:none;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#5a6268;
+}
+
+</style>
+
+<div class="purchase-card">
+
+    <h2 class="purchase-title">Add Purchase</h2>
+
+    <form method="POST" action="{% url 'add_purchase' %}" class="purchase-form">
+
+        {% csrf_token %}
+
+        <!-- Product -->
+        <select name="product" required>
+            <option value="" disabled selected>
+                -- Select Product --
+            </option>
+
+            {% for p in products %}
+            <option value="{{ p.product_id }}">
+                {{ p.mobile_name }} (Stock: {{ p.stock_quantity }})
+            </option>
+            {% endfor %}
+        </select>
+
+        <!-- Supplier -->
+        <select name="supplier" required>
+            <option value="" disabled selected>
+                -- Select Supplier --
+            </option>
+
+            {% for s in suppliers %}
+            <option value="{{ s.supplier_id }}">
+                {{ s.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <!-- Quantity -->
+        <input
+            type="number"
+            name="quantity"
+            min="1"
+            placeholder="Enter Quantity"
+            required
+        >
+
+        <!-- Purchase Price -->
+        <input
+            type="number"
+            name="purchase_price"
+            min="1"
+            placeholder="Enter Purchase Price"
+            required
+        >
+
+        <!-- Save Button -->
+        <button type="submit" class="save-btn">
+            Save Purchase
+        </button>
+
+        <!-- Back Button -->
+        <a href="{% url 'purchase_list' %}" class="back-btn">
+            ← Back
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

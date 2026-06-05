@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .form-container{
+        background:white;
+        padding:25px;
+        border-radius:10px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        max-width:700px;
+        margin:auto;
+    }
+
+    .form-title{
+        margin-bottom:20px;
+    }
+
+    .form-group{
+        margin-bottom:15px;
+    }
+
+    .form-group label{
+        display:block;
+        margin-bottom:5px;
+        font-weight:bold;
+    }
+
+    .form-group input,
+    .form-group textarea{
+        width:100%;
+        padding:10px;
+        border:1px solid #ccc;
+        border-radius:5px;
+    }
+
+    .btn{
+        padding:10px 15px;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+        text-decoration:none;
+        font-size:14px;
+    }
+
+    .btn-back{
+        background:#6c757d;
+        color:white;
+    }
+
+    .btn-submit{
+        background:#28a745;
+        color:white;
+        width:100%;
+        margin-top:10px;
+    }
+
+    .header{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+    }
+
+    .error{
+        color:red;
+        margin-bottom:10px;
+    }
+</style>
+
+<div class="header">
+    <h2 class="form-title">Add Supplier</h2>
+    <a href="{% url 'supplier_list' %}" class="btn btn-back">← Back</a>
+</div>
+
+<div class="form-container">
+
+    <!-- ERROR MESSAGE -->
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <!-- FORM START -->
+    <form method="POST" action="{% url 'add_supplier' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Supplier Name</label>
+            <input type="text" name="name" placeholder="Enter supplier name">
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone" placeholder="Enter phone number">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email">
+        </div>
+
+        <div class="form-group">
+            <label>Address</label>
+            <textarea name="address" placeholder="Enter address"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Add Supplier</button>
+
+    </form>
+    <!-- FORM END -->
+
+</div>
+
+{% endblock %}

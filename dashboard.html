@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ title }}</h2>
+
+<div class="dashboard">
+
+    <!-- COMMON (Admin + Staff) -->
+    <a href="{% url 'product_list' %}" class="card blue">
+        <i class="fas fa-mobile-alt"></i>
+        Products
+    </a>
+
+    <a href="{% url 'billing' %}" class="card green">
+        <i class="fas fa-file-invoice"></i>
+        Billing
+    </a>
+
+    <a href="{% url 'sales_report' %}" class="card purple">
+        <i class="fas fa-chart-line"></i>
+        Sales
+    </a>
+
+    <a href="{% url 'invoice_list' %}" class="card orange">
+        <i class="fas fa-file-alt"></i>
+        Invoices
+    </a>
+
+    <a href="{% url 'low_stock' %}" class="card red">
+        <i class="fas fa-exclamation-triangle"></i>
+        Low Stock
+    </a>
+
+    <!-- ADMIN ONLY -->
+    {% if request.user.is_superuser %}
+    
+    <a href="{% url 'supplier_list' %}" class="card blue">
+        <i class="fas fa-truck"></i>
+        Suppliers
+    </a>
+
+    <a href="{% url 'purchase_list' %}" class="card green">
+        <i class="fas fa-shopping-cart"></i>
+        Purchases
+    </a>
+
+    <a href="{% url 'staff_list' %}" class="card purple">
+        <i class="fas fa-users"></i>
+        Staff
+    </a>
+
+    <a href="{% url 'attendance' %}" class="card orange">
+        <i class="fas fa-calendar-check"></i>
+        Attendance
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

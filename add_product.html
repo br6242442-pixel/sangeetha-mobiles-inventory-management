@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-back {
+    padding: 6px 12px;
+    background: #7f8c8d;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* FORM CARD */
+.form-card {
+    max-width: 600px;
+    margin: 20px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: black;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    color: black;
+}
+
+/* BUTTON */
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: #219150;
+}
+
+/* VALIDATION */
+.error {
+    color: red;
+    font-size: 13px;
+}
+</style>
+
+<div class="page-header">
+    <h2>Add Product</h2>
+    <a href="{% url 'product_list' %}" class="btn-back">← Back</a>
+</div>
+
+<div class="form-card">
+    <form method="POST" onsubmit="return validateForm()">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Mobile Name</label>
+            <input type="text" id="mobile_name" name="mobile_name" placeholder="Enter mobile name">
+            <div class="error" id="nameError"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Brand / Model</label>
+            <input type="text" id="brand_model" name="brand_model" placeholder="Enter brand & model">
+            <div class="error" id="modelError"></div>
+        </div>
+
+        <div class="form-group">
+            <label>IMEI</label>
+            <input type="text" id="imei" name="imei" placeholder="Enter IMEI number">
+            <div class="error" id="imeiError"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Price</label>
+            <input type="number" id="price" name="price" placeholder="Enter price">
+            <div class="error" id="priceError"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Stock</label>
+            <input type="number" id="stock" name="stock" placeholder="Enter stock quantity">
+            <div class="error" id="stockError"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" placeholder="Enter description"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Add Product</button>
+    </form>
+</div>
+
+<script>
+function validateForm(){
+    let valid = true;
+
+    // clear old errors
+    document.querySelectorAll(".error").forEach(e => e.innerText = "");
+
+    let name = document.getElementById("mobile_name").value;
+    let model = document.getElementById("brand_model").value;
+    let imei = document.getElementById("imei").value;
+    let price = document.getElementById("price").value;
+    let stock = document.getElementById("stock").value;
+
+    if(name === ""){
+        document.getElementById("nameError").innerText = "Enter mobile name";
+        valid = false;
+    }
+
+    if(model === ""){
+        document.getElementById("modelError").innerText = "Enter model";
+        valid = false;
+    }
+
+    if(imei.length < 10){
+        document.getElementById("imeiError").innerText = "Invalid IMEI";
+        valid = false;
+    }
+
+    if(price <= 0){
+        document.getElementById("priceError").innerText = "Enter valid price";
+        valid = false;
+    }
+
+    if(stock < 0){
+        document.getElementById("stockError").innerText = "Invalid stock";
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+
+{% endblock %}

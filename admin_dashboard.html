@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="dashboard-container">
+
+    <h2>Admin Dashboard</h2>
+
+    <div class="menu-grid">
+
+        <a href="{% url 'product_list' %}" class="menu-item">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Products</span>
+        </a>
+
+        <a href="{% url 'supplier_list' %}" class="menu-item">
+            <i class="fas fa-truck"></i>
+            <span>Suppliers</span>
+        </a>
+
+        <a href="{% url 'purchase_list' %}" class="menu-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Purchases</span>
+        </a>
+
+        <a href="{% url 'sales_list' %}" class="menu-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Sales</span>
+        </a>
+
+        <a href="{% url 'invoice_list' %}" class="menu-item">
+            <i class="fas fa-file-invoice"></i>
+            <span>Invoices</span>
+        </a>
+
+        <a href="{% url 'staff_list' %}" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span>Staff</span>
+        </a>
+
+        <a href="{% url 'attendance' %}" class="menu-item">
+            <i class="fas fa-calendar-check"></i>
+            <span>Attendance</span>
+        </a>
+
+        <a href="{% url 'low_stock' %}" class="menu-item">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Low Stock</span>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

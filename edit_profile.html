@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div data-content>
+
+<!-- ✅ FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+.card {
+    width: 100%;
+    max-width: 950px;
+    display: flex;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* LEFT */
+.left {
+    width: 30%;
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.left img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* RIGHT */
+.right {
+    width: 70%;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input-box {
+    position: relative;
+}
+
+.input-box i {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    color: #888;
+}
+
+.input-box input,
+.input-box textarea {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.full {
+    grid-column: span 2;
+}
+
+.btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.msg {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.msg.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.msg.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.back-btn{
+    margin-bottom:10px;
+    display:inline-block;
+    background:#6c757d;
+    color:white;
+    padding:6px 12px;
+    border-radius:5px;
+    text-decoration:none;
+}
+</style>
+
+<div class="container">
+<div class="card">
+
+<!-- LEFT -->
+<div class="left">
+    <img id="preview"
+         src="{% if profile.profile_pic %}{{ profile.profile_pic.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
+
+    <h3>{{ user.username }}</h3>
+    <p>{{ profile.role }}</p>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<!-- ✅ BACK BUTTON -->
+<button onclick="loadPage('{% url 'profile' %}')" class="back-btn">← Back</button>
+
+<h2>Edit Profile</h2>
+
+<!-- MESSAGES -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="msg {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<div class="grid">
+
+<div class="input-box">
+<i class="fa fa-phone"></i>
+<input type="text" name="mobile" id="mobile"
+value="{{ profile.mobile }}" placeholder="Mobile">
+<small id="mobile-error" style="color:red;"></small>
+</div>
+
+<div class="input-box">
+<i class="fa fa-user"></i>
+<input type="text" name="age" value="{{ profile.age }}" placeholder="Age">
+</div>
+
+<div class="input-box">
+<i class="fa fa-city"></i>
+<input type="text" name="city" value="{{ profile.city }}" placeholder="City">
+</div>
+
+<div class="input-box">
+<i class="fa fa-map"></i>
+<input type="text" name="state" value="{{ profile.state }}" placeholder="State">
+</div>
+
+<div class="input-box">
+<i class="fa fa-location-pin"></i>
+<input type="text" name="zip_code" value="{{ profile.zip_code }}" placeholder="Zip Code">
+</div>
+
+<div class="input-box">
+<i class="fa fa-graduation-cap"></i>
+<input type="text" name="qualification" value="{{ profile.qualification }}" placeholder="Qualification">
+</div>
+
+<div class="input-box full">
+<i class="fa fa-home"></i>
+<textarea name="address">{{ profile.address }}</textarea>
+</div>
+
+<div class="input-box full">
+<i class="fa fa-user-tag"></i>
+<input type="text" name="role" value="{{ profile.role }}">
+</div>
+
+<div class="input-box full">
+<input type="file" name="profile_pic" onchange="previewImage(event)">
+</div>
+
+</div>
+
+<hr>
+
+<h3>Change Password</h3>
+
+<div class="input-box full">
+<i class="fa fa-lock"></i>
+<input type="password" name="old_password" placeholder="Old Password">
+</div>
+
+<div class="input-box full">
+<i class="fa fa-lock"></i>
+<input type="password" name="new_password" id="new_password" placeholder="New Password">
+<small id="strength"></small>
+</div>
+
+<div class="input-box full">
+<i class="fa fa-lock"></i>
+<input type="password" name="confirm_password" placeholder="Confirm Password">
+</div>
+
+<button class="btn">Save Changes</button>
+
+</form>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function(){
+        document.getElementById('preview').src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+document.getElementById("mobile").addEventListener("input", function(){
+    let val = this.value;
+    let error = document.getElementById("mobile-error");
+
+    if(val.length != 10 || isNaN(val)){
+        error.innerText = "Enter valid 10-digit number";
+    } else {
+        error.innerText = "";
+    }
+});
+
+document.getElementById("new_password").addEventListener("input", function(){
+    let val = this.value;
+    let msg = document.getElementById("strength");
+
+    if(val.length < 5){
+        msg.innerText = "Weak ❌";
+        msg.style.color = "red";
+    } else if(val.length < 8){
+        msg.innerText = "Medium ⚠️";
+        msg.style.color = "orange";
+    } else {
+        msg.innerText = "Strong ✅";
+        msg.style.color = "green";
+    }
+});
+</script>
+
+{% endblock %}
